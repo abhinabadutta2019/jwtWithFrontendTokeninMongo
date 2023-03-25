@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+
+<h2>Sign Up</h2>
+
+<form action="#">
+  <!-- email -->
+  <label for="email">Email</label>
+  <input type="text" id="signupEmail" required />
+  <!-- password -->
+  <label for="password">Password</label>
+  <input type="password" id="signupPassword" required />
+  <!--  -->
+</form>
+<button id="signupButton" onclick="onSignupButton()">Submit</button>
+
+<%- include('partials/footer') %>
+
+<script>
+  //
+
+  function onSignupButton() {
+    //
+
+    const signEmail = document.getElementById("signupEmail").value;
+    const signPassword = document.getElementById("signupPassword").value;
+    // console.log(email, password);
+
+    fetch("/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: signEmail, password: signPassword }),
+    }).then((response) => {
+      console.log("Hi1");
+      //   res.json();
+      //refresh
+      location = window.location;
+    });
+  }
+
+  //fetch request diye frontend theke backend e data send
+</script>

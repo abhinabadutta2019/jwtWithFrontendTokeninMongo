@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+
+<h2>Login page</h2>
+
+<form action="#">
+  <!-- email -->
+  <label for="email">Email</label>
+  <input type="text" id="loginEmail" required />
+  <!-- password -->
+  <label for="password">Password</label>
+  <input type="password" id="loginPassword" required />
+  <!--  -->
+</form>
+<button id="loginButton" onclick="onLoginButton()">Submit</button>
+
+<%- include('partials/footer') %>
+
+<script>
+  //
+
+  function onLoginButton() {
+    //
+
+    const logEmail = document.getElementById("loginEmail").value;
+    const logPassword = document.getElementById("loginPassword").value;
+    // console.log(email, password);
+
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: logEmail, password: logPassword }),
+    }).then((response) => {
+      console.log("Hi2");
+      //   res.json();
+      //refresh
+      location = window.location;
+    });
+  }
+
+  //fetch request diye frontend theke backend e data send
+</script>
