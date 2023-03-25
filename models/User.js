@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -32,15 +31,15 @@ const userSchema = new mongoose.Schema({
   ],
 });
 //
-userSchema.methods.generateAuthToken = async function () {
-  const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse");
+// userSchema.methods.generateAuthToken = async function () {
+//   const user = this;
+//   const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse");
 
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+//   user.tokens = user.tokens.concat({ token });
+//   await user.save();
 
-  return token;
-};
+//   return token;
+// };
 
 // Hash the plain text password before saving
 userSchema.pre("save", async function (next) {
@@ -52,21 +51,22 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
-//
-userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email });
 
-  if (!user) {
-    throw new Error("Unable to login");
+// fire a function before doc saved to db
+
+//// static method to login user
+userSchema.statics.login = async function (email, password) {
+  // const user = await this.findOne({ email: email });
+  const user = await this.findOne({ email: email }).lean();
+  //
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    // if (auth) {
+    //
+    console.log(user, "from this model");
+    return user;
+    // }
   }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    throw new Error("Unable to login");
-  }
-
-  return user;
 };
 
 const User = mongoose.model("user", userSchema);
