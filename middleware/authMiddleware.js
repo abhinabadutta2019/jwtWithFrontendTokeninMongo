@@ -2,14 +2,16 @@ const jwt = require("jsonwebtoken");
 
 const requireAuth = (req, res, next) => {
   let token = req.cookies.jwt;
+  //token getting from header in postman( not browser)
+  // let token = localStorage.getItem("jwt");
+  // //token getting from header
+
+  // if (!token) {
+  //   token = req.headers.token;
+  // }
+
   //
 
-  //token getting from header
-
-  if (!token) {
-    token = req.headers.token;
-  }
-  console.log(token, "token--");
   //
   // console.log(JSON.stringify(req.headers.token));
 

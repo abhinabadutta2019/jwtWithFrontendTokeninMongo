@@ -48,18 +48,14 @@ router.post("/login", async (req, res) => {
     const user = await User.login(email, password);
     //
     const token = createToken(user._id);
-
-    console.log(user.id, user.email);
-    // const userDoc = [user._id, user.email, user.password];
+    console.log(token, "from login/post");
 
     // delete user["tokens"];
     //user spread holo- object theke object e spread hoi
     const newUser = { ...user, tokens: null, password: null, token: token };
     //
-    // user.tokens = null;
-
-    // console.log(user);
-
+    //
+    res.cookie("jwt", token);
     // const newUser = user.filter();
     //
     // user.tokens = user.tokens.concat({ token });
@@ -69,8 +65,10 @@ router.post("/login", async (req, res) => {
     // res.send({ user: user, token });
     //token key added to user object
     // user.token = token;
-    console.log(user);
-    res.send({ user: newUser });
+    // console.log(user, "from login/post");
+    //
+
+    res.send({ user: newUser, token });
   } catch (e) {
     res.status(400).send();
   }
